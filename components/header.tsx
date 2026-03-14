@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { ShoppingCart, User, LogOut, LayoutDashboard, Search, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -58,7 +57,7 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full header-gradient">
+    <header className="sticky top-0 z-50 w-full header-gradient h-[100px] flex items-center">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Navigation Links - Left */}

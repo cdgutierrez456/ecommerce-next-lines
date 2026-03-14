@@ -23,8 +23,8 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "postcss": "8.4.30",
     "prisma": "6.7.0",
-    "tailwind-merge": "2.5.2",
-    "tailwindcss": "3.3.3",
+    "tailwind-merge": "3.5.0",
+    "tailwindcss": "4.2.1",
     "tailwindcss-animate": "1.0.7",
     "ts-node": "10.9.2",
     "tsx": "4.20.3",
@@ -66,6 +66,7 @@
     "@radix-ui/react-toggle-group": "1.1.0",
     "@radix-ui/react-tooltip": "1.1.2",
     "@stripe/stripe-js": "^8.6.0",
+    "@tailwindcss/postcss": "^4.2.1",
     "@tanstack/react-query": "5.0.0",
     "@types/bcryptjs": "2.4.6",
     "@types/jsonwebtoken": "9.0.5",
@@ -126,5 +127,10 @@
     "> 0.5%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@personal-git:cdgutierrez456/ecommerce-next-lines.git",
+  "author": "Cristian Gutierrez <cdgutierrez456@gmail.com>",
+  "license": "MIT"
 }

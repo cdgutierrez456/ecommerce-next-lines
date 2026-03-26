@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -10,37 +10,40 @@ import { Mail, Lock, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 
+interface SignupFormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export default function SignupPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupFormData>();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
+  const onSubmit = async (data: SignupFormData) => {
     try {
       const res = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify(data),
       });
 
-      const data = await res.json();
+      const json = await res.json();
 
       if (!res.ok) {
-        toast.error(data.error || 'Error al registrarse');
-        setLoading(false);
+        toast.error(json.error || 'Error al registrarse');
         return;
       }
 
       toast.success('Cuenta creada exitosamente');
 
       const result = await signIn('credentials', {
-        email,
-        password,
+        email: data.email,
+        password: data.password,
         redirect: false,
       });
 
@@ -53,8 +56,6 @@ export default function SignupPage() {
     } catch (error) {
       console.error('Signup error:', error);
       toast.error('Error al registrarse');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -69,10 +70,10 @@ export default function SignupPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Crear Cuenta</h1>
-            <p className="text-gray-600 mt-2">Regístrate en ShopHub</p>
+            <p className="text-gray-600 mt-2">Regístrate en Line's Actitud</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nombre
@@ -81,13 +82,14 @@ export default function SignupPage() {
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  {...register('name', { required: 'El nombre es requerido' })}
                   className="pl-10"
                   placeholder="Tu nombre"
-                  required
                 />
               </div>
+              {errors.name && (
+                <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+              )}
             </div>
 
             <div>
@@ -98,13 +100,17 @@ export default function SignupPage() {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register('email', {
+                    required: 'El email es requerido',
+                    pattern: { value: /^\S+@\S+\.\S+$/, message: 'Email inválido' },
+                  })}
                   className="pl-10"
                   placeholder="tu@email.com"
-                  required
                 />
               </div>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
 
             <div>
@@ -115,22 +121,25 @@ export default function SignupPage() {
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register('password', {
+                    required: 'La contraseña es requerida',
+                    minLength: { value: 6, message: 'Mínimo 6 caracteres' },
+                  })}
                   className="pl-10"
                   placeholder="••••••••"
-                  required
-                  minLength={6}
                 />
               </div>
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+              )}
             </div>
 
             <Button
               type="submit"
-              disabled={loading}
+              disabled={isSubmitting}
               className="w-full bg-primary hover:bg-primary-hover py-6 text-lg"
             >
-              {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
+              {isSubmitting ? 'Creando cuenta...' : 'Crear Cuenta'}
             </Button>
           </form>
 

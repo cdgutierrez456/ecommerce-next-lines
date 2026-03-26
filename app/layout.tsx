@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   title: 'ShopHub - Tu Tienda Online',
   description: 'Tienda online moderna con los mejores productos',
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
   },
   openGraph: {
     title: 'ShopHub - Tu Tienda Online',

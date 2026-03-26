@@ -42,7 +42,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-[#60B5FF] to-[#4A9FE8] py-12 px-4">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center body-gradient py-12 px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -52,7 +52,7 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900">Iniciar Sesión</h1>
-            <p className="text-gray-600 mt-2">Accede a tu cuenta de ShopHub</p>
+            <p className="text-gray-600 mt-2">Accede a tu cuenta de Line's Actitud</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -93,7 +93,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#60B5FF] hover:bg-[#4A9FE8] py-6 text-lg"
+              className="w-full bg-primary hover:bg-primary-hover py-6 text-lg"
             >
               {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </Button>
@@ -102,7 +102,7 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               ¿No tienes cuenta?{' '}
-              <Link href="/signup" className="text-[#60B5FF] hover:text-[#4A9FE8] font-medium">
+              <Link href="/signup" className="text-primary hover:text-primary-hover font-medium">
                 Regístrate aquí
               </Link>
             </p>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { ShoppingCart, User, LogOut, LayoutDashboard, Search, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, LogOut, LayoutDashboard, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function Header() {
@@ -57,7 +57,7 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full header-gradient h-[100px] flex items-center">
+    <header className="sticky top-0 z-50 w-full body-gradient h-[100px] flex items-center">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Navigation Links - Left */}
@@ -100,10 +100,6 @@ export function Header() {
                 <LayoutDashboard className="h-5 w-5" />
               </Link>
             )}
-
-            <button className="text-gray-200 hover:text-white transition-colors" title="Buscar">
-              <Search className="h-5 w-5" />
-            </button>
 
             {status === 'authenticated' && session ? (
               <>

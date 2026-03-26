@@ -81,9 +81,9 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               </div>
             )}
           </div>
-          
+
           <div className="space-y-2">
-            <p className="text-xs text-[#60B5FF] font-medium uppercase">
+            <p className="text-xs text-primary font-medium uppercase">
               {product?.category?.name}
             </p>
             <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
@@ -92,14 +92,14 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             <p className="text-sm text-gray-600 line-clamp-2">
               {product.description}
             </p>
-            
+
             <div className="flex items-center justify-between pt-2">
               <p className="text-2xl font-bold text-gray-900">
                 ${product.price?.toFixed?.(2) ?? '0.00'}
               </p>
               <Button
                 size="sm"
-                className="bg-[#60B5FF] hover:bg-[#4A9FE8] gap-2"
+                className="bg-primary hover:body-gradient gap-2"
                 onClick={addToCart}
               >
                 <ShoppingCart className="h-4 w-4" />

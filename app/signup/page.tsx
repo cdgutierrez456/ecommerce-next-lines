@@ -38,7 +38,6 @@ export default function SignupPage() {
 
       toast.success('Cuenta creada exitosamente');
 
-      // Auto login after signup
       const result = await signIn('credentials', {
         email,
         password,
@@ -60,7 +59,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-[#60B5FF] to-[#4A9FE8] py-12 px-4">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center body-gradient py-12 px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -129,7 +128,7 @@ export default function SignupPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#60B5FF] hover:bg-[#4A9FE8] py-6 text-lg"
+              className="w-full bg-primary hover:bg-primary-hover py-6 text-lg"
             >
               {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
             </Button>
@@ -138,7 +137,7 @@ export default function SignupPage() {
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               ¿Ya tienes cuenta?{' '}
-              <Link href="/login" className="text-[#60B5FF] hover:text-[#4A9FE8] font-medium">
+              <Link href="/login" className="text-primary hover:text-primary-hover font-medium">
                 Inicia sesión aquí
               </Link>
             </p>

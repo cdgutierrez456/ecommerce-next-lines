@@ -71,9 +71,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen from-white to-gray-50 body-gradient">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-[#60B5FF] to-[#4A9FE8] text-white py-20">
+      <section className="text-white h-[60dvh] flex items-center">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
@@ -81,7 +81,7 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             className="text-5xl md:text-6xl font-bold mb-6"
           >
-            Bienvenido a Line's Actitud
+            Bienvenido a Line's <span className='text-primary'>Actitud</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: -20 }}
@@ -113,12 +113,12 @@ export default function HomePage() {
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
-              <Filter className="h-5 w-5 text-gray-600" />
+              <Filter className="h-5 w-5 text-white" />
               <Button
                 variant={selectedCategory === '' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setSelectedCategory('')}
-                className={selectedCategory === '' ? 'bg-[#60B5FF] hover:bg-[#4A9FE8]' : ''}
+                className={selectedCategory === '' ? 'bg-primary hover:body-gradient' : ''}
               >
                 Todos
               </Button>
@@ -128,7 +128,7 @@ export default function HomePage() {
                   variant={selectedCategory === category.id ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setSelectedCategory(category.id)}
-                  className={selectedCategory === category.id ? 'bg-[#60B5FF] hover:bg-[#4A9FE8]' : ''}
+                  className={selectedCategory === category.id ? 'bg-primary hover:body-gradient' : ''}
                 >
                   {category.name}
                 </Button>

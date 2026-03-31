@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
+import { useGuestCart } from '@/store/cart-store';
 
 interface ProductCardProps {
   product: {
@@ -26,13 +27,21 @@ interface ProductCardProps {
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { data: session } = useSession() || {};
   const router = useRouter();
+  const guestCart = useGuestCart();
 
   const addToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (!session) {
-      router.push('/login');
+      guestCart.addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        images: product.images,
+        category: product.category,
+      });
+      toast.success('Producto agregado al carrito');
       return;
     }
 

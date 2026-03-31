@@ -95,12 +95,12 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen body-gradient py-12">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Button
           variant="ghost"
           onClick={() => router.back()}
-          className="mb-6 gap-2"
+          className="mb-6 gap-2 text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Volver
@@ -188,6 +188,7 @@ export default function ProductDetailPage() {
                   </span>
                   <Button
                     variant="outline"
+                    disabled={quantity >= product.stock}
                     onClick={() => setQuantity(quantity + 1)}
                   >
                     +
@@ -197,7 +198,7 @@ export default function ProductDetailPage() {
 
               <Button
                 onClick={addToCart}
-                className="w-full bg-primary hover:bg-[#4A9FE8] py-6 text-lg gap-2"
+                className="w-full bg-primary hover:bg-primary-hover py-6 text-lg gap-2"
               >
                 <ShoppingCart className="h-5 w-5" />
                 Agregar al Carrito

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Trash2, ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
+import { useGuestCart } from '@/store/cart-store';
 
 interface CartItem {
   id: string;
@@ -26,18 +27,19 @@ interface CartItem {
 export default function CartPage() {
   const { data: session, status } = useSession() || {};
   const router = useRouter();
+  const guestCart = useGuestCart();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const isGuest = status === 'unauthenticated';
+
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
-      return;
-    }
     if (status === 'authenticated') {
       fetchCart();
+    } else if (status === 'unauthenticated') {
+      setLoading(false);
     }
-  }, [status, router]);
+  }, [status]);
 
   const fetchCart = async () => {
     try {
@@ -56,14 +58,12 @@ export default function CartPage() {
 
   const updateQuantity = async (cartItemId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
-
     try {
       const res = await fetch('/api/cart', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cartItemId, quantity: newQuantity }),
       });
-
       if (res.ok) {
         fetchCart();
       } else {
@@ -80,7 +80,6 @@ export default function CartPage() {
       const res = await fetch(`/api/cart?cartItemId=${cartItemId}`, {
         method: 'DELETE',
       });
-
       if (res.ok) {
         toast.success('Producto eliminado');
         fetchCart();
@@ -93,10 +92,15 @@ export default function CartPage() {
     }
   };
 
-  const total = cartItems?.reduce?.(
+  const guestItems = guestCart.items;
+  const displayItems: CartItem[] = isGuest
+    ? guestItems.map((i) => ({ id: i.productId, quantity: i.quantity, product: i.product }))
+    : cartItems;
+
+  const total = displayItems.reduce(
     (sum, item) => sum + (item?.product?.price ?? 0) * (item?.quantity ?? 0),
     0
-  ) ?? 0;
+  );
 
   if (status === 'loading' || loading) {
     return (
@@ -107,17 +111,17 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen body-gradient py-12">
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-8">Mi Carrito</h1>
+          <h1 className="text-4xl font-bold text-white mb-8">Mi Carrito</h1>
         </motion.div>
 
-        {cartItems?.length === 0 ? (
+        {displayItems.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -137,7 +141,7 @@ export default function CartPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
-              {cartItems?.map?.((item, index) => (
+              {displayItems.map((item, index) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, x: -20 }}
@@ -177,7 +181,11 @@ export default function CartPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() =>
+                          isGuest
+                            ? guestCart.removeItem(item.id)
+                            : removeItem(item.id)
+                        }
                         className="text-red-500 hover:text-red-700 hover:bg-red-50"
                       >
                         <Trash2 className="h-5 w-5" />
@@ -187,7 +195,12 @@ export default function CartPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          disabled={item.quantity <= 1}
+                          onClick={() =>
+                            isGuest
+                              ? guestCart.updateQuantity(item.id, item.quantity - 1)
+                              : updateQuantity(item.id, item.quantity - 1)
+                          }
                         >
                           -
                         </Button>
@@ -197,7 +210,11 @@ export default function CartPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() =>
+                            isGuest
+                              ? guestCart.updateQuantity(item.id, item.quantity + 1)
+                              : updateQuantity(item.id, item.quantity + 1)
+                          }
                         >
                           +
                         </Button>
@@ -205,7 +222,7 @@ export default function CartPage() {
                     </div>
                   </div>
                 </motion.div>
-              )) || null}
+              ))}
             </div>
 
             {/* Order Summary */}
@@ -235,12 +252,26 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <Button
-                  onClick={() => router.push('/checkout')}
-                  className="w-full bg-primary hover:bg-primary/90 py-6 text-lg"
-                >
-                  Proceder al Pago
-                </Button>
+                {isGuest ? (
+                  <div className="space-y-3">
+                    <Button
+                      onClick={() => router.push('/login?callbackUrl=/checkout')}
+                      className="w-full bg-primary hover:bg-primary/90 py-6 text-lg"
+                    >
+                      Iniciar sesión para pagar
+                    </Button>
+                    <p className="text-xs text-gray-500 text-center">
+                      Tu carrito se conservará al iniciar sesión
+                    </p>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={() => router.push('/checkout')}
+                    className="w-full bg-primary hover:bg-primary/90 py-6 text-lg"
+                  >
+                    Proceder al Pago
+                  </Button>
+                )}
               </div>
             </motion.div>
           </div>

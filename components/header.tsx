@@ -52,7 +52,6 @@ export function Header() {
     { href: '/', label: 'Inicio' },
     { href: '/products?category=gorras', label: 'Gorras' },
     { href: '/products?category=perfumeria', label: 'Perfumería' },
-    { href: '/products?category=ofertas', label: 'Ofertas' },
     { href: '/contacto', label: 'Contacto' },
   ];
 

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
+import { useGuestCart } from '@/store/cart-store';
 
 interface CartItem {
   id: string;
@@ -21,6 +22,7 @@ interface CartItem {
 export default function CheckoutPage() {
   const { data: session, status } = useSession() || {};
   const router = useRouter();
+  const guestCart = useGuestCart();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -31,15 +33,32 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/login');
+      router.push('/login?callbackUrl=/checkout');
       return;
     }
     if (status === 'authenticated') {
-      fetchCart();
       setShippingEmail(session?.user?.email || '');
       setShippingName(session?.user?.name || '');
+      mergeGuestCartAndFetch();
     }
   }, [status, router, session]);
+
+  const mergeGuestCartAndFetch = async () => {
+    const localItems = guestCart.items;
+    if (localItems.length > 0) {
+      await Promise.all(
+        localItems.map((item) =>
+          fetch('/api/cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId: item.productId, quantity: item.quantity }),
+          })
+        )
+      );
+      guestCart.clearCart();
+    }
+    fetchCart();
+  };
 
   const fetchCart = async () => {
     try {

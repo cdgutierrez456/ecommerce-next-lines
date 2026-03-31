@@ -84,8 +84,8 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Cargando...</p>
+      <div className="min-h-screen flex items-center justify-center body-gradient">
+        <p className="text-white">Cargando...</p>
       </div>
     );
   }

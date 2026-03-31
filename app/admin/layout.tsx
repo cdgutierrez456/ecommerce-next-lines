@@ -23,7 +23,7 @@ export default async function AdminLayout({
     <div className="flex min-h-screen bg-gray-50">
       <AdminSidebar />
       <main className="flex-1 lg:ml-64 transition-all duration-300">
-        <div className="p-6 lg:p-8">{children}</div>
+        <div className="p-6 lg:p-8 body-gradient">{children}</div>
       </main>
     </div>
   );

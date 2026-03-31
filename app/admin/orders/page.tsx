@@ -247,7 +247,7 @@ export default function AdminOrdersPage() {
                 <select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#60B5FF]"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <option value="PENDING">Pendiente</option>
                   <option value="PROCESSING">Procesando</option>
@@ -267,7 +267,7 @@ export default function AdminOrdersPage() {
                 </Button>
                 <Button
                   onClick={handleUpdateStatus}
-                  className="flex-1 bg-[#60B5FF] hover:bg-[#4A9FE8]"
+                  className="flex-1 bg-primary hover:bg-[#4A9FE8]"
                 >
                   Actualizar
                 </Button>

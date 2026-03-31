@@ -79,7 +79,7 @@ export default function AdminDashboard() {
   const COLORS = ['#60B5FF', '#FF9149', '#FF9898', '#80D8C3', '#A19AD3'];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -87,8 +87,8 @@ export default function AdminDashboard() {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Panel de Administración</h1>
-          <p className="text-gray-600">Bienvenido al dashboard administrativo</p>
+          <h1 className="text-4xl font-bold text-white mb-2">Panel de Administración</h1>
+          <p className="text-gray-300">Bienvenido al dashboard administrativo</p>
         </motion.div>
 
         {/* Stats Cards */}
@@ -179,7 +179,7 @@ export default function AdminDashboard() {
             className="bg-white rounded-xl shadow-lg p-6"
           >
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-[#60B5FF]" />
+              <TrendingUp className="h-5 w-5 text-primary" />
               Productos Más Vendidos
             </h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -217,7 +217,7 @@ export default function AdminDashboard() {
             className="bg-white rounded-xl shadow-lg p-6"
           >
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <ShoppingCart className="h-5 w-5 text-[#60B5FF]" />
+              <ShoppingCart className="h-5 w-5 text-primary" />
               Órdenes por Estado
             </h2>
             <ResponsiveContainer width="100%" height={300}>
@@ -257,28 +257,28 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <button
               onClick={() => router.push('/admin/products')}
-              className="p-4 border-2 border-[#60B5FF] rounded-lg hover:bg-[#60B5FF] hover:text-white transition-all duration-300 text-center"
+              className="p-4 border-2 border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300 text-center"
             >
               <Package className="h-8 w-8 mx-auto mb-2" />
               <p className="font-semibold">Gestionar Productos</p>
             </button>
             <button
               onClick={() => router.push('/admin/categories')}
-              className="p-4 border-2 border-[#60B5FF] rounded-lg hover:bg-[#60B5FF] hover:text-white transition-all duration-300 text-center"
+              className="p-4 border-2 border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300 text-center"
             >
               <Package className="h-8 w-8 mx-auto mb-2" />
               <p className="font-semibold">Gestionar Categorías</p>
             </button>
             <button
               onClick={() => router.push('/admin/users')}
-              className="p-4 border-2 border-[#60B5FF] rounded-lg hover:bg-[#60B5FF] hover:text-white transition-all duration-300 text-center"
+              className="p-4 border-2 border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300 text-center"
             >
               <Users className="h-8 w-8 mx-auto mb-2" />
               <p className="font-semibold">Gestionar Usuarios</p>
             </button>
             <button
               onClick={() => router.push('/admin/orders')}
-              className="p-4 border-2 border-[#60B5FF] rounded-lg hover:bg-[#60B5FF] hover:text-white transition-all duration-300 text-center"
+              className="p-4 border-2 border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300 text-center"
             >
               <ShoppingCart className="h-8 w-8 mx-auto mb-2" />
               <p className="font-semibold">Gestionar Órdenes</p>

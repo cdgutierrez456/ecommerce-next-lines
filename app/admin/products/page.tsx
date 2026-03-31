@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -28,6 +29,14 @@ interface Category {
   name: string;
 }
 
+interface ProductFormData {
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  categoryId: string;
+}
+
 export default function AdminProductsPage() {
   const { data: session, status } = useSession() || {};
   const router = useRouter();
@@ -36,14 +45,15 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [stock, setStock] = useState('');
-  const [categoryId, setCategoryId] = useState('');
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ProductFormData>();
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -127,38 +137,25 @@ export default function AdminProductsPage() {
 
   const openCreateModal = () => {
     setEditingProduct(null);
-    setName('');
-    setDescription('');
-    setPrice('');
-    setStock('');
-    setCategoryId('');
+    reset({ name: '', description: '', price: undefined, stock: undefined, categoryId: '' });
     setUploadedImages([]);
     setShowModal(true);
   };
 
   const openEditModal = (product: Product) => {
     setEditingProduct(product);
-    setName(product.name);
-    setDescription(product.description);
-    setPrice(product.price.toString());
-    setStock(product.stock.toString());
-    setCategoryId(product.category.id);
+    reset({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      stock: product.stock,
+      categoryId: product.category.id,
+    });
     setUploadedImages(product.images || []);
     setShowModal(true);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const productData = {
-      name,
-      description,
-      price: parseFloat(price),
-      stock: parseInt(stock),
-      categoryId,
-      images: uploadedImages,
-    };
-
+  const onSubmit = async (data: ProductFormData) => {
     try {
       const url = editingProduct
         ? `/api/products/${editingProduct.id}`
@@ -168,13 +165,11 @@ export default function AdminProductsPage() {
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productData),
+        body: JSON.stringify({ ...data, images: uploadedImages }),
       });
 
       if (res.ok) {
-        toast.success(
-          editingProduct ? 'Producto actualizado' : 'Producto creado'
-        );
+        toast.success(editingProduct ? 'Producto actualizado' : 'Producto creado');
         setShowModal(false);
         fetchProducts();
       } else {
@@ -232,7 +227,7 @@ export default function AdminProductsPage() {
           </div>
           <Button
             onClick={openCreateModal}
-            className="bg-[#60B5FF] hover:bg-[#4A9FE8] gap-2"
+            className="bg-primary hover:bg-[#4A9FE8] gap-2"
           >
             <Plus className="h-5 w-5" />
             Nuevo Producto
@@ -271,7 +266,7 @@ export default function AdminProductsPage() {
               <p className="text-sm text-gray-600 mb-2">
                 Categoría: {product?.category?.name}
               </p>
-              <p className="text-xl font-bold text-[#60B5FF] mb-2">
+              <p className="text-xl font-bold text-primary mb-2">
                 ${product.price?.toFixed?.(2) ?? '0.00'}
               </p>
               <p className="text-sm text-gray-600 mb-4">
@@ -314,18 +309,19 @@ export default function AdminProductsPage() {
               {editingProduct ? 'Editar Producto' : 'Nuevo Producto'}
             </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Nombre
                 </label>
                 <Input
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
+                  {...register('name', { required: 'El nombre es requerido' })}
                   placeholder="Nombre del producto"
                 />
+                {errors.name && (
+                  <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+                )}
               </div>
 
               <div>
@@ -333,13 +329,14 @@ export default function AdminProductsPage() {
                   Descripción
                 </label>
                 <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
+                  {...register('description', { required: 'La descripción es requerida' })}
                   rows={4}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#60B5FF]"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Descripción del producto"
                 />
+                {errors.description && (
+                  <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -350,11 +347,16 @@ export default function AdminProductsPage() {
                   <Input
                     type="number"
                     step="0.01"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    required
+                    {...register('price', {
+                      required: 'El precio es requerido',
+                      valueAsNumber: true,
+                      min: { value: 0, message: 'El precio debe ser mayor a 0' },
+                    })}
                     placeholder="0.00"
                   />
+                  {errors.price && (
+                    <p className="mt-1 text-sm text-red-500">{errors.price.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -363,11 +365,16 @@ export default function AdminProductsPage() {
                   </label>
                   <Input
                     type="number"
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
-                    required
+                    {...register('stock', {
+                      required: 'El stock es requerido',
+                      valueAsNumber: true,
+                      min: { value: 0, message: 'El stock no puede ser negativo' },
+                    })}
                     placeholder="0"
                   />
+                  {errors.stock && (
+                    <p className="mt-1 text-sm text-red-500">{errors.stock.message}</p>
+                  )}
                 </div>
               </div>
 
@@ -376,10 +383,8 @@ export default function AdminProductsPage() {
                   Categoría
                 </label>
                 <select
-                  value={categoryId}
-                  onChange={(e) => setCategoryId(e.target.value)}
-                  required
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#60B5FF]"
+                  {...register('categoryId', { required: 'La categoría es requerida' })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <option value="">Selecciona una categoría</option>
                   {categories?.map?.((cat) => (
@@ -388,6 +393,9 @@ export default function AdminProductsPage() {
                     </option>
                   )) || null}
                 </select>
+                {errors.categoryId && (
+                  <p className="mt-1 text-sm text-red-500">{errors.categoryId.message}</p>
+                )}
               </div>
 
               <div>
@@ -449,9 +457,10 @@ export default function AdminProductsPage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-[#60B5FF] hover:bg-[#4A9FE8]"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-primary hover:bg-[#4A9FE8]"
                 >
-                  {editingProduct ? 'Actualizar' : 'Crear'}
+                  {isSubmitting ? 'Guardando...' : editingProduct ? 'Actualizar' : 'Crear'}
                 </Button>
               </div>
             </form>

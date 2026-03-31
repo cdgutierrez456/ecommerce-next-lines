@@ -105,7 +105,7 @@ export default function OrdersPage() {
             <p className="text-xl text-gray-600 mb-6">No tienes órdenes aún</p>
             <Button
               onClick={() => router.push('/')}
-              className="bg-[#60B5FF] hover:bg-[#4A9FE8]"
+              className="bg-primary hover:bg-[#4A9FE8]"
             >
               Comenzar a comprar
             </Button>
@@ -139,7 +139,7 @@ export default function OrdersPage() {
                     {order?.items?.length ?? 0} producto(s)
                   </p>
                   <div className="flex items-center justify-between">
-                    <p className="text-2xl font-bold text-[#60B5FF]">
+                    <p className="text-2xl font-bold text-primary">
                       ${order.total?.toFixed?.(2) ?? '0.00'}
                     </p>
                     <Button

@@ -24,7 +24,7 @@ export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  
+
   const [shippingName, setShippingName] = useState('');
   const [shippingEmail, setShippingEmail] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
@@ -136,7 +136,7 @@ export default function CheckoutPage() {
         >
           <div>
             <h2 className="text-2xl font-semibold mb-6">Información de Envío</h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -173,7 +173,7 @@ export default function CheckoutPage() {
                   onChange={(e) => setShippingAddress(e.target.value)}
                   required
                   rows={3}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#60B5FF]"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Calle, ciudad, código postal, país"
                 />
               </div>
@@ -196,7 +196,7 @@ export default function CheckoutPage() {
               <div className="border-t pt-2 mt-2">
                 <div className="flex justify-between text-xl font-bold">
                   <span>Total</span>
-                  <span className="text-[#60B5FF]">
+                  <span className="text-primary">
                     ${total?.toFixed?.(2) ?? '0.00'}
                   </span>
                 </div>
@@ -207,7 +207,7 @@ export default function CheckoutPage() {
           <Button
             type="submit"
             disabled={submitting}
-            className="w-full bg-[#60B5FF] hover:bg-[#4A9FE8] py-6 text-lg"
+            className="w-full bg-primary hover:bg-[#4A9FE8] py-6 text-lg"
           >
             {submitting ? 'Redirigiendo a Stripe...' : 'Proceder al Pago'}
           </Button>

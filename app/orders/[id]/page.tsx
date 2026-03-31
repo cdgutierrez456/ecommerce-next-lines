@@ -139,7 +139,7 @@ export default function OrderDetailPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t pt-6">
               <div>
                 <h2 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                  <Package className="h-5 w-5 text-[#60B5FF]" />
+                  <Package className="h-5 w-5 text-primary" />
                   Información de Envío
                 </h2>
                 <p className="text-gray-700">{order.shippingName}</p>
@@ -156,7 +156,7 @@ export default function OrderDetailPage() {
                   <div className="border-t pt-2">
                     <div className="flex justify-between text-xl font-bold">
                       <span>Total</span>
-                      <span className="text-[#60B5FF]">${order.total?.toFixed?.(2) ?? '0.00'}</span>
+                      <span className="text-primary">${order.total?.toFixed?.(2) ?? '0.00'}</span>
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,40 +15,41 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+interface NewUserFormData {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
 export default function NewUserPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    role: 'CUSTOMER',
-  });
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<NewUserFormData>({ defaultValues: { role: 'CUSTOMER' } });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
+  const onSubmit = async (data: NewUserFormData) => {
     try {
       const res = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
 
-      const data = await res.json();
+      const json = await res.json();
 
       if (res.ok) {
         toast.success('Usuario creado exitosamente');
         router.push('/admin/users');
       } else {
-        toast.error(data.error || 'Error al crear usuario');
+        toast.error(json.error || 'Error al crear usuario');
       }
     } catch (error) {
       console.error('Error:', error);
       toast.error('Error al crear usuario');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -68,19 +69,18 @@ export default function NewUserPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="name">Nombre Completo</Label>
               <Input
                 id="name"
                 type="text"
                 placeholder="Juan Pérez"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                required
+                {...register('name', { required: 'El nombre es requerido' })}
               />
+              {errors.name && (
+                <p className="text-sm text-red-500">{errors.name.message}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -89,12 +89,14 @@ export default function NewUserPage() {
                 id="email"
                 type="email"
                 placeholder="usuario@ejemplo.com"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                required
+                {...register('email', {
+                  required: 'El correo es requerido',
+                  pattern: { value: /^\S+@\S+\.\S+$/, message: 'Correo inválido' },
+                })}
               />
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -103,34 +105,37 @@ export default function NewUserPage() {
                 id="password"
                 type="password"
                 placeholder="Mínimo 6 caracteres"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                required
-                minLength={6}
+                {...register('password', {
+                  required: 'La contraseña es requerida',
+                  minLength: { value: 6, message: 'Mínimo 6 caracteres' },
+                })}
               />
-              <p className="text-sm text-gray-500">
-                La contraseña debe tener al menos 6 caracteres
-              </p>
+              {errors.password ? (
+                <p className="text-sm text-red-500">{errors.password.message}</p>
+              ) : (
+                <p className="text-sm text-gray-500">
+                  La contraseña debe tener al menos 6 caracteres
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="role">Rol del Usuario</Label>
-              <Select
-                value={formData.role}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, role: value })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un rol" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="CUSTOMER">Cliente</SelectItem>
-                  <SelectItem value="ADMIN">Administrador</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                name="role"
+                control={control}
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona un rol" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="CUSTOMER">Cliente</SelectItem>
+                      <SelectItem value="ADMIN">Administrador</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
               <p className="text-sm text-gray-500">
                 Los administradores tienen acceso completo al panel de administración
               </p>
@@ -139,16 +144,16 @@ export default function NewUserPage() {
             <div className="flex gap-4 pt-4">
               <Button
                 type="submit"
-                disabled={loading}
+                disabled={isSubmitting}
                 className="flex-1"
               >
-                {loading ? 'Creando...' : 'Crear Usuario'}
+                {isSubmitting ? 'Creando...' : 'Crear Usuario'}
               </Button>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => router.push('/admin/users')}
-                disabled={loading}
+                disabled={isSubmitting}
               >
                 Cancelar
               </Button>

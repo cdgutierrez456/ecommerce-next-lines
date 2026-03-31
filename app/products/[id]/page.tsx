@@ -135,7 +135,7 @@ export default function ProductDetailPage() {
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
                     className={`relative aspect-square rounded-md overflow-hidden ${
-                      selectedImage === idx ? 'ring-2 ring-[#60B5FF]' : ''
+                      selectedImage === idx ? 'ring-2 ring-primary' : ''
                     }`}
                   >
                     <Image
@@ -153,13 +153,13 @@ export default function ProductDetailPage() {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <p className="text-sm text-[#60B5FF] font-medium uppercase mb-2">
+              <p className="text-sm text-primary font-medium uppercase mb-2">
                 {product?.category?.name}
               </p>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
                 {product.name}
               </h1>
-              <p className="text-3xl font-bold text-[#60B5FF]">
+              <p className="text-3xl font-bold text-primary">
                 ${product.price?.toFixed?.(2) ?? '0.00'}
               </p>
             </div>
@@ -197,7 +197,7 @@ export default function ProductDetailPage() {
 
               <Button
                 onClick={addToCart}
-                className="w-full bg-[#60B5FF] hover:bg-[#4A9FE8] py-6 text-lg gap-2"
+                className="w-full bg-primary hover:bg-[#4A9FE8] py-6 text-lg gap-2"
               >
                 <ShoppingCart className="h-5 w-5" />
                 Agregar al Carrito

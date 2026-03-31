@@ -27,7 +27,7 @@ export default function CheckoutSuccessPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#60B5FF] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-gray-600">Procesando tu pago...</p>
         </div>
       </div>
@@ -53,7 +53,7 @@ export default function CheckoutSuccessPage() {
         </div>
 
         <div className="bg-gray-50 rounded-lg p-6 mb-6">
-          <Package className="h-12 w-12 text-[#60B5FF] mx-auto mb-3" />
+          <Package className="h-12 w-12 text-primary mx-auto mb-3" />
           <p className="text-sm text-gray-700">
             Recibirás un correo de confirmación con los detalles de tu orden.
           </p>
@@ -62,7 +62,7 @@ export default function CheckoutSuccessPage() {
         <div className="space-y-3">
           <Button
             onClick={() => router.push('/orders')}
-            className="w-full bg-[#60B5FF] hover:bg-[#4A9FE8] py-6 text-lg"
+            className="w-full bg-primary hover:bg-[#4A9FE8] py-6 text-lg"
           >
             Ver Mis Órdenes
           </Button>

@@ -25,7 +25,7 @@ export default function AdminCategoriesPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -153,7 +153,7 @@ export default function AdminCategoriesPage() {
           </div>
           <Button
             onClick={openCreateModal}
-            className="bg-[#60B5FF] hover:bg-[#4A9FE8] gap-2"
+            className="bg-primary hover:bg-[#4A9FE8] gap-2"
           >
             <Plus className="h-5 w-5" />
             Nueva Categoría
@@ -170,8 +170,8 @@ export default function AdminCategoriesPage() {
               className="bg-white rounded-lg shadow-md p-6"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="bg-[#60B5FF]/10 p-3 rounded-lg">
-                  <Tag className="h-8 w-8 text-[#60B5FF]" />
+                <div className="bg-primary/10 p-3 rounded-lg">
+                  <Tag className="h-8 w-8 text-primary" />
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -197,7 +197,7 @@ export default function AdminCategoriesPage() {
               <p className="text-sm text-gray-600 mb-4">
                 {category.description || 'Sin descripción'}
               </p>
-              <p className="text-sm text-[#60B5FF] font-medium">
+              <p className="text-sm text-primary font-medium">
                 {category?._count?.products ?? 0} productos
               </p>
             </motion.div>
@@ -240,7 +240,7 @@ export default function AdminCategoriesPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#60B5FF]"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Descripción de la categoría (opcional)"
                 />
               </div>
@@ -256,7 +256,7 @@ export default function AdminCategoriesPage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-[#60B5FF] hover:bg-[#4A9FE8]"
+                  className="flex-1 bg-primary hover:bg-[#4A9FE8]"
                 >
                   {editingCategory ? 'Actualizar' : 'Crear'}
                 </Button>

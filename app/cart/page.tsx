@@ -128,7 +128,7 @@ export default function CartPage() {
             <p className="text-xl text-gray-600 mb-6">Tu carrito está vacío</p>
             <Button
               onClick={() => router.push('/')}
-              className="bg-[#60B5FF] hover:bg-[#4A9FE8]"
+              className="bg-primary hover:bg-[#4A9FE8]"
             >
               Ir a comprar
             </Button>
@@ -168,7 +168,7 @@ export default function CartPage() {
                       <p className="text-sm text-gray-600">
                         {item?.product?.category?.name}
                       </p>
-                      <p className="text-lg font-bold text-[#60B5FF] mt-2">
+                      <p className="text-lg font-bold text-primary mt-2">
                         ${item?.product?.price?.toFixed?.(2) ?? '0.00'}
                       </p>
                     </div>
@@ -219,7 +219,7 @@ export default function CartPage() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Resumen
                 </h2>
-                
+
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
@@ -228,7 +228,7 @@ export default function CartPage() {
                   <div className="border-t pt-4">
                     <div className="flex justify-between text-xl font-bold">
                       <span>Total</span>
-                      <span className="text-[#60B5FF]">
+                      <span className="text-primary">
                         ${total?.toFixed?.(2) ?? '0.00'}
                       </span>
                     </div>
@@ -237,7 +237,7 @@ export default function CartPage() {
 
                 <Button
                   onClick={() => router.push('/checkout')}
-                  className="w-full bg-[#60B5FF] hover:bg-[#4A9FE8] py-6 text-lg"
+                  className="w-full bg-primary hover:bg-primary/90 py-6 text-lg"
                 >
                   Proceder al Pago
                 </Button>

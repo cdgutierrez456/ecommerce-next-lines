@@ -56,7 +56,7 @@ export default function AdminUsersPage() {
 
   const toggleRole = async (userId: string, currentRole: string) => {
     const newRole = currentRole === 'ADMIN' ? 'CUSTOMER' : 'ADMIN';
-    
+
     if (!confirm(`¿Cambiar rol a ${newRole}?`)) return;
 
     try {
@@ -145,8 +145,8 @@ export default function AdminUsersPage() {
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="bg-[#60B5FF]/10 p-2 rounded-full">
-                          <UserIcon className="h-5 w-5 text-[#60B5FF]" />
+                        <div className="bg-primary/10 p-2 rounded-full">
+                          <UserIcon className="h-5 w-5 text-primary" />
                         </div>
                         <span className="font-medium text-gray-900">
                           {user.name || 'Sin nombre'}

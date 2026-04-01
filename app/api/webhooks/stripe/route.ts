@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 import { prisma } from '@/lib/db';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-12-15.clover',
+  apiVersion: '2026-02-25.clover',
 });
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -61,11 +61,11 @@ export async function POST(request: Request) {
       const orderItems = [];
       for (const item of lineItems) {
         let productName = 'Unknown product';
-        
+
         if (typeof item.price?.product === 'object' && item.price.product && !item.price.product.deleted) {
           productName = item.price.product.name || 'Unknown product';
         }
-        
+
         // Try to find product by name
         const product = await prisma.product.findFirst({
           where: { name: productName },

@@ -111,6 +111,8 @@ async function main() {
       email: 'admin@tienda.com',
       password: adminPassword,
       name: 'Admin Tienda',
+      phone: '+57 300 000 0001',
+      acceptContact: true,
       role: 'ADMIN',
     },
   });
@@ -122,6 +124,8 @@ async function main() {
       email: 'usuario@tienda.com',
       password: userPassword,
       name: 'Usuario Demo',
+      phone: '+57 300 000 0002',
+      acceptContact: true,
       role: 'CUSTOMER',
     },
   });

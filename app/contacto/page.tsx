@@ -35,7 +35,7 @@ export default function ContactoPage() {
   return (
     <div className="min-h-screen body-gradient">
       {/* Hero */}
-      <section className="text-white h-[25dvh] flex items-center">
+      <section className="text-white h-[20dvh] flex items-center">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
@@ -57,7 +57,7 @@ export default function ContactoPage() {
       </section>
 
       {/* Content */}
-      <section className="py-12">
+      <section className="py-7">
         <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Info */}

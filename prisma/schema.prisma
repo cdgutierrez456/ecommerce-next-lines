@@ -2,14 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["lines_actitud"]
 }
 
 enum Role {
@@ -32,6 +31,8 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
+  phone         String?
+  acceptContact Boolean   @default(false)
   role          Role      @default(CUSTOMER)
   accounts      Account[]
   sessions      Session[]

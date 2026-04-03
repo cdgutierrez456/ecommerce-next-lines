@@ -111,7 +111,7 @@ export default function HomePage() {
       </section>
 
       {/* Products Section */}
-      <section className="py-12">
+      <section className="py-7">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Search and Filters */}
           <div className="mb-8 space-y-4">

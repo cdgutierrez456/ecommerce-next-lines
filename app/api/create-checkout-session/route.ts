@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { items, shippingName, shippingEmail, shippingAddress } = body;
+    const { items, shippingName, shippingEmail, shippingAddress, pse } = body;
 
     if (!items || items?.length === 0) {
       return NextResponse.json(
@@ -57,6 +57,16 @@ export async function POST(request: Request) {
         shippingName,
         shippingEmail,
         shippingAddress,
+        ...(pse && {
+          pseFullName: pse.fullName,
+          psePersonType: pse.personType,
+          pseDocumentType: pse.documentType,
+          pseDocumentNumber: pse.documentNumber,
+          pseBank: pse.bank,
+          pseEmail: pse.email,
+          psePhone: pse.phone,
+          pseAddress: pse.address,
+        }),
       },
     });
 

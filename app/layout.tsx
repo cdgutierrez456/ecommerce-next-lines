@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Line's Actitud - Tu Tienda Online",
     description: 'Tienda online moderna con los mejores productos',
-    images: ['/og-image.png'],
+    images: ['/og-image.jpeg'],
   },
 };
 

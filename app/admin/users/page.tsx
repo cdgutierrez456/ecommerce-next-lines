@@ -94,12 +94,12 @@ export default function AdminUsersPage() {
             <Button
               variant="ghost"
               onClick={() => router.push('/admin')}
-              className="gap-2"
+              className="gap-2 text-white"
             >
               <ArrowLeft className="h-4 w-4" />
               Volver
             </Button>
-            <h1 className="text-4xl font-bold text-gray-900">Gestionar Usuarios</h1>
+            <h1 className="text-4xl font-bold text-white">Gestionar Usuarios</h1>
           </div>
           <Button
             onClick={() => router.push('/admin/users/new')}

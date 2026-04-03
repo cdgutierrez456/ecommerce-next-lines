@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { ShoppingCart, User, LogOut, LayoutDashboard, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useGuestCart } from '@/store/cart-store';
 
 export function Header() {
   const { data: session, status } = useSession() || {};
-  const [cartCount, setCartCount] = useState(0);
+  const guestCart = useGuestCart();
+  const [apiCartCount, setApiCartCount] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -25,7 +27,7 @@ export function Header() {
 
       return () => clearInterval(interval);
     } else {
-      setCartCount(0);
+      setApiCartCount(0);
     }
   }, [session]);
 
@@ -35,12 +37,16 @@ export function Header() {
       if (res.ok) {
         const data = await res.json();
         const totalItems = data?.reduce((sum: number, item: any) => sum + (item.quantity || 0), 0) || 0;
-        setCartCount(totalItems);
+        setApiCartCount(totalItems);
       }
     } catch (error) {
       console.error('Error fetching cart:', error);
     }
   };
+
+  const cartCount = session?.user
+    ? apiCartCount
+    : guestCart.items.reduce((sum, item) => sum + item.quantity, 0);
 
   if (!mounted) {
     return null;
@@ -51,7 +57,7 @@ export function Header() {
   const navLinks = [
     { href: '/', label: 'Inicio' },
     { href: '/products?category=gorras', label: 'Gorras' },
-    { href: '/products?category=perfumeria', label: 'Perfumería' },
+    { href: '/products?category=camisetas', label: 'Camisetas' },
     { href: '/contacto', label: 'Contacto' },
   ];
 
@@ -126,8 +132,13 @@ export function Header() {
                 <Link href="/login" className="text-gray-200 hover:text-white transition-colors" title="Iniciar sesión">
                   <User className="h-5 w-5" />
                 </Link>
-                <Link href="/cart" className="text-gray-200 hover:text-white transition-colors" title="Carrito">
+                <Link href="/cart" className="relative text-gray-200 hover:text-white transition-colors" title="Carrito">
                   <ShoppingCart className="h-5 w-5" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+                      {cartCount > 99 ? '99+' : cartCount}
+                    </span>
+                  )}
                 </Link>
               </>
             )}

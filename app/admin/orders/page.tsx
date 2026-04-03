@@ -267,7 +267,7 @@ export default function AdminOrdersPage() {
                 </Button>
                 <Button
                   onClick={handleUpdateStatus}
-                  className="flex-1 bg-primary hover:bg-[#4A9FE8]"
+                  className="flex-1 bg-primary hover:bg-primary-hover"
                 >
                   Actualizar
                 </Button>

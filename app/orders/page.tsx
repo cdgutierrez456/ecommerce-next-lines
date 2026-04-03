@@ -105,7 +105,7 @@ export default function OrdersPage() {
             <p className="text-xl text-gray-600 mb-6">No tienes órdenes aún</p>
             <Button
               onClick={() => router.push('/')}
-              className="bg-primary hover:bg-[#4A9FE8]"
+              className="bg-primary hover:bg-primary-hover"
             >
               Comenzar a comprar
             </Button>

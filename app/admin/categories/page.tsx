@@ -153,7 +153,7 @@ export default function AdminCategoriesPage() {
           </div>
           <Button
             onClick={openCreateModal}
-            className="bg-primary hover:bg-[#4A9FE8] gap-2"
+            className="bg-primary hover:bg-primary-hover gap-2"
           >
             <Plus className="h-5 w-5" />
             Nueva Categoría
@@ -256,7 +256,7 @@ export default function AdminCategoriesPage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-primary hover:bg-[#4A9FE8]"
+                  className="flex-1 bg-primary hover:bg-primary-hover"
                 >
                   {editingCategory ? 'Actualizar' : 'Crear'}
                 </Button>

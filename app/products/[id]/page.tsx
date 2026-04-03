@@ -8,6 +8,7 @@ import { ShoppingCart, ArrowLeft } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
+import { useGuestCart } from '@/store/cart-store';
 
 interface Product {
   id: string;
@@ -25,15 +26,14 @@ export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { data: session } = useSession() || {};
+  const guestCart = useGuestCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
-    if (params?.id) {
-      fetchProduct();
-    }
+    if (params?.id) fetchProduct();
   }, [params?.id]);
 
   const fetchProduct = async () => {
@@ -55,8 +55,18 @@ export default function ProductDetailPage() {
   };
 
   const addToCart = async () => {
+    if (!product) return;
+
     if (!session) {
-      router.push('/login');
+      guestCart.addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        images: product.images,
+        category: product.category,
+      }, quantity);
+      toast.success('Producto agregado al carrito');
+      router.push('/cart');
       return;
     }
 
@@ -65,7 +75,7 @@ export default function ProductDetailPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          productId: product?.id,
+          productId: product.id,
           quantity,
         }),
       });

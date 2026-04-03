@@ -9,12 +9,18 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get("categoryId");
+    const categorySlug = searchParams.get("category");
     const search = searchParams.get("search");
 
-    const where: any = {};
+    const where: any = {
+      stock: { gt: 0 },
+      category: { isActive: true },
+    };
 
     if (categoryId) {
       where.categoryId = categoryId;
+    } else if (categorySlug) {
+      where.category = { ...where.category, slug: categorySlug };
     }
 
     if (search) {

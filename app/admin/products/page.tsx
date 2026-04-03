@@ -227,7 +227,7 @@ export default function AdminProductsPage() {
           </div>
           <Button
             onClick={openCreateModal}
-            className="bg-primary hover:bg-[#4A9FE8] gap-2"
+            className="bg-primary hover:bg-primary-hover gap-2"
           >
             <Plus className="h-5 w-5" />
             Nuevo Producto
@@ -458,7 +458,7 @@ export default function AdminProductsPage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-primary hover:bg-[#4A9FE8]"
+                  className="flex-1 bg-primary hover:bg-primary-hover"
                 >
                   {isSubmitting ? 'Guardando...' : editingProduct ? 'Actualizar' : 'Crear'}
                 </Button>

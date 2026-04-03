@@ -5,6 +5,7 @@ import { ProductCard } from '@/components/product-card';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Filter, Search } from 'lucide-react';
+import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 
 interface Product {
@@ -75,6 +76,21 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="text-white h-[60dvh] flex items-center">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="mb-6"
+          >
+            <Image
+              src="/IconSinFondo.png"
+              alt="Line's Actitud"
+              width={150}
+              height={150}
+              className="mx-auto"
+              priority
+            />
+          </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

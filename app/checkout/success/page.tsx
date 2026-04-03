@@ -62,7 +62,7 @@ export default function CheckoutSuccessPage() {
         <div className="space-y-3">
           <Button
             onClick={() => router.push('/orders')}
-            className="w-full bg-primary hover:bg-[#4A9FE8] py-6 text-lg"
+            className="w-full bg-primary hover:bg-primary-hover py-6 text-lg"
           >
             Ver Mis Órdenes
           </Button>

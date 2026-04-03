@@ -132,7 +132,7 @@ export default function CartPage() {
             <p className="text-xl text-gray-600 mb-6">Tu carrito está vacío</p>
             <Button
               onClick={() => router.push('/')}
-              className="bg-primary hover:bg-[#4A9FE8]"
+              className="bg-primary hover:bg-primary-hover"
             >
               Ir a comprar
             </Button>

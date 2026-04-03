@@ -226,7 +226,7 @@ export default function CheckoutPage() {
           <Button
             type="submit"
             disabled={submitting}
-            className="w-full bg-primary hover:bg-[#4A9FE8] py-6 text-lg"
+            className="w-full bg-primary hover:bg-primary-hover py-6 text-lg"
           >
             {submitting ? 'Redirigiendo a Stripe...' : 'Proceder al Pago'}
           </Button>

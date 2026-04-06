@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 
 const MEGAPAGOS_API = process.env.MEGAPAGOS_API!;
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const origin = request.headers.get("host") || "localhost:3000";

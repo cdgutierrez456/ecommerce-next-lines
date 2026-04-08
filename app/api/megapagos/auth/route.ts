@@ -4,6 +4,8 @@ const MEGAPAGOS_API = process.env.MEGAPAGOS_API!;
 const MEGAPAGOS_USER = process.env.MEGAPAGOS_USER!;
 const MEGAPAGOS_PASS = process.env.MEGAPAGOS_PASS!;
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const res = await fetch(`${MEGAPAGOS_API}/user/login-comercio`, {

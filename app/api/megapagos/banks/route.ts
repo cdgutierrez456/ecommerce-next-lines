@@ -18,7 +18,6 @@ export async function GET(request: Request) {
     }
 
     const tokenInfo = await authRes.json();
-    debugger
     const accessToken = tokenInfo.token?.accessToken;
 
     if (!accessToken) {
@@ -55,6 +54,7 @@ export async function GET(request: Request) {
       status: 200,
       message: "Successful in get the data",
       data: banks,
+      comercio: tokenInfo.comercio || null,
     });
   } catch (error) {
     console.error("Error al obtener los bancos de PSE:", error);

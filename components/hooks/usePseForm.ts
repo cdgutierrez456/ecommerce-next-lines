@@ -10,6 +10,8 @@ import type { Bank } from '../interfaces/bank';
 import type { CartItem } from '../interfaces/cart';
 import type { ShippingData } from '../interfaces/shipping';
 
+import { setInfo } from '@/lib/encrypt';
+
 export type { Bank, CartItem, ShippingData };
 export type PseFormData = z.infer<typeof pseSchema>;
 
@@ -20,8 +22,12 @@ interface UsePseFormParams {
   setSubmitting: (value: boolean) => void;
 }
 
+const COMMERCE_NAME = process.env.COMMERCE_NAME!;
+const SHIPPING_COST = Number(process.env.SHIPPING_COST || '0');
+
 export function usePseForm({ shippingData, cartItems, submitting, setSubmitting }: UsePseFormParams) {
   const [banks, setBanks] = useState<Bank[]>([]);
+  const [commerce, setCommerce] = useState<any>(null);
   const [loadingBanks, setLoadingBanks] = useState(true);
 
   useEffect(() => {
@@ -31,6 +37,7 @@ export function usePseForm({ shippingData, cartItems, submitting, setSubmitting 
         if (res.ok) {
           const data = await res.json();
           setBanks(data.data || []);
+          setCommerce(data.comercio || null);
         } else {
           toast.error('Error al cargar los bancos');
         }
@@ -62,11 +69,12 @@ export function usePseForm({ shippingData, cartItems, submitting, setSubmitting 
       confirmEmail: '',
       phone: '',
       address: '',
-      acceptCommunications: true,
+      acceptTerms: false as unknown as true,
+      acceptCommunications: false,
     },
   });
 
-  const buildPseBody = (pseData: PseFormData) => {
+  const buildPseBody = async (pseData: PseFormData) => {
     const totalAmount = cartItems?.reduce?.(
       (sum, item) => sum + (item?.product?.price ?? 0) * (item?.quantity ?? 0),
       0
@@ -77,25 +85,25 @@ export function usePseForm({ shippingData, cartItems, submitting, setSubmitting 
       0
     ) ?? 0;
 
-    return {
+    const body = {
       data: {
         extraData: {
           idtiposolicitud: 5,
           idtipooperacion: 5,
           linkcode: '-1',
-          idusuario: '',
+          idusuario: commerce.idusuario,
           solicitudenvio: 'N',
           externalurl: '',
         },
         step1: {
-          name: '',
-          description: '',
+          name: `Pedido hecho desde ${COMMERCE_NAME || 'Ecommerce'}`,
+          description: 'Descripcion larga',
           value: totalAmount,
           in_stock: true,
           idimpuesto: 21,
-          shipping_cost: 0,
+          shipping_cost: SHIPPING_COST,
           requested_units: totalUnits,
-          total_amount: totalAmount,
+          total_amount: totalAmount + SHIPPING_COST,
           payment_amount: 0,
         },
         step3: {
@@ -113,7 +121,13 @@ export function usePseForm({ shippingData, cartItems, submitting, setSubmitting 
             pse_document_type: pseData.documentType,
           },
         },
-      },
+      }
+    }
+
+    const infoEcrypted = await setInfo(JSON.stringify(body))
+
+    return {
+      "data": infoEcrypted
     };
   };
 
@@ -122,9 +136,10 @@ export function usePseForm({ shippingData, cartItems, submitting, setSubmitting 
     setSubmitting(true);
 
     try {
-      const body = buildPseBody(pseData);
+      const body = await buildPseBody(pseData);
+      console.log('body', body);
 
-      const res = await fetch('/api/create-checkout-session', {
+      const res = await fetch('/api/megapagos/pse', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -142,7 +157,6 @@ export function usePseForm({ shippingData, cartItems, submitting, setSubmitting 
         toast.error(error.error || 'Error al crear sesión de pago');
       }
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Error al procesar el pago');
     } finally {
       setSubmitting(false);

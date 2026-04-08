@@ -172,7 +172,7 @@ export default function PseForm({ show, shippingData, cartItems, submitting, set
               {/* Correo */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Correo al que llegará el certificado *
+                  Correo electrónico *
                 </label>
                 <Input
                   type="email"
@@ -232,6 +232,26 @@ export default function PseForm({ show, shippingData, cartItems, submitting, set
 
             {/* Checkboxes */}
             <div className="space-y-3 mt-6">
+              <div className="flex items-start gap-2">
+                <Controller
+                  control={pseControl}
+                  name="acceptTerms"
+                  render={({ field }) => (
+                    <Checkbox
+                      id="acceptTerms"
+                      checked={field.value === true}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+                <label htmlFor="acceptTerms" className="text-sm text-gray-700 leading-tight">
+                  Acepto los <span className="text-primary font-medium">términos y condiciones</span> del servicio. *
+                </label>
+              </div>
+              {pseErrors.acceptTerms && (
+                <p className="text-sm text-red-500">{pseErrors.acceptTerms.message}</p>
+              )}
+
               <div className="flex items-start gap-2">
                 <Controller
                   control={pseControl}

@@ -28,6 +28,7 @@ export async function GET(request: Request) {
     }
 
     const keyRes = await fetch(`${MEGAPAGOS_API}/key/public`, {
+      cache: 'no-store',
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

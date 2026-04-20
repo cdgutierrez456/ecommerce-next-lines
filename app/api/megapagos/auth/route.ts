@@ -10,6 +10,7 @@ export async function GET() {
   try {
     const res = await fetch(`${MEGAPAGOS_API}/user/login-comercio`, {
       method: "POST",
+      cache: 'no-store',
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -36,6 +37,7 @@ export async function GET() {
       { error: "Error al autenticar con Megapagos" },
       { status: res.status }
     );
+    console.log('Token info', tokenInfo);
 
     return NextResponse.json(tokenInfo);
   } catch (error) {

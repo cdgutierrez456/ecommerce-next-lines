@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     const origin = request.headers.get("host") || "localhost:3000";
     const protocol = origin.includes("localhost") ? "http" : "https";
 
-    const authRes = await fetch(`${protocol}://${origin}/api/megapagos/auth`);
+    const authRes = await fetch(`${protocol}://${origin}/api/megapagos/auth`, { cache: 'no-store' });
     if (!authRes.ok) {
       return NextResponse.json(
         { status: 400, message: "Error al autenticar con Megapagos" },
@@ -28,12 +28,14 @@ export async function GET(request: Request) {
     }
 
     const banksRes = await fetch(`${MEGAPAGOS_API}/transaction/get-banks`, {
+      cache: 'no-store',
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    console.log('bank', banksRes);
 
     if (!banksRes.ok) {
       const errorData = await banksRes.json().catch(() => null);

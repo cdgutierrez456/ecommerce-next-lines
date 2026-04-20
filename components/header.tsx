@@ -21,11 +21,11 @@ export function Header() {
     if (session?.user) {
       fetchCartCount();
 
-      const interval = setInterval(() => {
-        fetchCartCount();
-      }, 3000);
+      // const interval = setInterval(() => {
+      //   fetchCartCount();
+      // }, 3000);
 
-      return () => clearInterval(interval);
+      // return () => clearInterval(interval);
     } else {
       setApiCartCount(0);
     }

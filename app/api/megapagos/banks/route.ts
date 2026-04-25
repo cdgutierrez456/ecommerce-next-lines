@@ -35,7 +35,6 @@ export async function GET(request: Request) {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log('bank', banksRes);
 
     if (!banksRes.ok) {
       const errorData = await banksRes.json().catch(() => null);

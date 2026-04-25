@@ -101,7 +101,6 @@ export async function POST(request: Request) {
         where: { userId: metadata.userId },
       });
 
-      console.log('Order created successfully for session:', session.id);
     }
 
     return NextResponse.json({ received: true });

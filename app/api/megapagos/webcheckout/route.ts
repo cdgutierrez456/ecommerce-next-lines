@@ -46,6 +46,7 @@ export async function POST(request: Request) {
       redirect_url: NEXTAUTH_URL ? `${NEXTAUTH_URL}/checkout/status` : '',
       client: 'api',
     };
+    console.log('Body', body);
 
     const res = await fetch(`${MEGAPAGOS_API}/webcheckout`, {
       method: 'POST',
@@ -56,7 +57,6 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify(body),
     });
-    console.log('Res', res);
 
     const data = await res.json();
 

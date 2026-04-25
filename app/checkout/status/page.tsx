@@ -26,7 +26,7 @@ const TRANSACTION_STATUS: Record<string, { label: string; color: string; icon: R
 
 const PAYMENT_TYPE: Record<string, string> = {
   cash: 'Efectivo',
-  pse:  'PSE',
+  bank:  'PSE',
   card: 'T. Crédito',
 };
 
@@ -120,12 +120,12 @@ export default function CheckoutStatusPage() {
 
         {txData && (
           <div className="bg-gray-50 rounded-xl p-5 mb-6 text-left space-y-3">
-            <InfoRow label="Método de pago"    value={PAYMENT_TYPE[txData.payment_type] ?? txData.payment_type} />
+            <InfoRow label="Método de pago"    value={PAYMENT_TYPE[txData.payment_type]} />
             <InfoRow label="Nombre del pagador" value={txData.payerDetails.name} />
             <InfoRow label="Email pagador"      value={txData.payerDetails.email} />
             <InfoRow label="Valor pagado"       value={formatCurrency(txData.internalDetails.total_value)} />
             <InfoRow label="Fecha de pago"      value={formatDate(txData.internalDetails.date_payment)} />
-            <InfoRow label="ID transacción"     value={txData.transaction_id} mono />
+            <InfoRow label="ID transacción"     value={txData.transaction_id} />
           </div>
         )}
 

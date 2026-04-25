@@ -37,7 +37,6 @@ export async function GET() {
       { error: "Error al autenticar con Megapagos" },
       { status: res.status }
     );
-    console.log('Token info', tokenInfo);
 
     return NextResponse.json(tokenInfo);
   } catch (error) {

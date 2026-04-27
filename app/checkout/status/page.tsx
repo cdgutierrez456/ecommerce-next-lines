@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, XCircle, Clock, AlertCircle, Package } from 'lucide-react';
@@ -50,10 +50,12 @@ export default function CheckoutStatusPage() {
   const [loading, setLoading] = useState(true);
   const [txData, setTxData] = useState<TransactionData | null>(null);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [orderSaving, setOrderSaving] = useState(false);
+  const orderRegistered = useRef(false);
 
-  const sessionId    = searchParams?.get('session_id');
+  const sessionId     = searchParams?.get('session_id');
   const transactionId = searchParams?.get('transactionId');
-  const webcheckout  = searchParams?.get('webcheckout');
+  const webcheckout   = searchParams?.get('webcheckout');
 
   useEffect(() => {
     if (transactionId) {
@@ -78,6 +80,48 @@ export default function CheckoutStatusPage() {
       setLoading(false);
     }
   }, [sessionId, transactionId, webcheckout]);
+
+  // Registra la orden una sola vez al recibir los datos de la transacción
+  useEffect(() => {
+    if (!txData || !transactionId || orderRegistered.current) return;
+    orderRegistered.current = true;
+
+    const raw = sessionStorage.getItem('pendingOrder');
+    if (!raw) return;
+
+    let pendingOrder: {
+      shippingName: string;
+      shippingEmail: string;
+      shippingAddress: string;
+      items: { productId: string; quantity: number; price: number }[];
+      total: number;
+    };
+
+    try {
+      pendingOrder = JSON.parse(raw);
+    } catch {
+      return;
+    }
+
+    setOrderSaving(true);
+
+    fetch('/api/orders/from-transaction', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        transactionId,
+        transactionStatus: txData.status,
+        shippingName: pendingOrder.shippingName,
+        shippingEmail: pendingOrder.shippingEmail,
+        shippingAddress: pendingOrder.shippingAddress,
+        items: pendingOrder.items,
+        total: pendingOrder.total,
+      }),
+    })
+      .then(() => sessionStorage.removeItem('pendingOrder'))
+      .catch((err) => console.error('Error al registrar la orden:', err))
+      .finally(() => setOrderSaving(false));
+  }, [txData, transactionId]);
 
   if (loading) {
     return (
@@ -133,9 +177,17 @@ export default function CheckoutStatusPage() {
           {isApproved && (
             <Button
               onClick={() => router.push('/orders')}
-              className="w-full bg-primary hover:bg-primary-hover py-6 text-lg"
+              disabled={orderSaving}
+              className="w-full bg-primary hover:bg-primary-hover py-6 text-lg disabled:opacity-70"
             >
-              Ver Mis Órdenes
+              {orderSaving ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Registrando orden...
+                </span>
+              ) : (
+                'Ver Mis Órdenes'
+              )}
             </Button>
           )}
           <Button

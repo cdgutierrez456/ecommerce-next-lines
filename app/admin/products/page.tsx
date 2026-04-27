@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus, Pencil, Trash2, ArrowLeft, Upload } from 'lucide-react';
+import { Plus, Pencil, Trash2, ArrowLeft, Upload, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 
@@ -45,6 +45,8 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
 
@@ -182,14 +184,13 @@ export default function AdminProductsPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+  const requestDelete = (id: string) => setDeleteId(id);
 
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
     try {
-      const res = await fetch(`/api/products/${id}`, {
-        method: 'DELETE',
-      });
-
+      const res = await fetch(`/api/products/${deleteId}`, { method: 'DELETE' });
       if (res.ok) {
         toast.success('Producto eliminado');
         fetchProducts();
@@ -199,6 +200,9 @@ export default function AdminProductsPage() {
     } catch (error) {
       console.error('Error:', error);
       toast.error('Error al eliminar producto');
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
     }
   };
 
@@ -283,7 +287,7 @@ export default function AdminProductsPage() {
                   Editar
                 </Button>
                 <Button
-                  onClick={() => handleDelete(product.id)}
+                  onClick={() => requestDelete(product.id)}
                   variant="outline"
                   size="sm"
                   className="text-red-500 hover:text-red-700 hover:bg-red-50"
@@ -296,7 +300,45 @@ export default function AdminProductsPage() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal confirmación eliminar */}
+      {deleteId && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8 text-center"
+          >
+            <div className="flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mx-auto mb-4">
+              <AlertTriangle className="h-8 w-8 text-red-500" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Eliminar producto</h2>
+            <p className="text-gray-500 text-sm mb-6">
+              Esta acción es permanente y no se puede deshacer.
+            </p>
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                className="flex-1"
+                disabled={deleting}
+                onClick={() => setDeleteId(null)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white"
+                disabled={deleting}
+                onClick={confirmDelete}
+              >
+                {deleting ? 'Eliminando...' : 'Eliminar'}
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Modal crear/editar */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <motion.div

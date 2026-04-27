@@ -90,8 +90,8 @@ export default function OrderDetailPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Cargando orden...</p>
+      <div className="min-h-screen flex items-center justify-center body-gradient">
+        <p className="text-white">Cargando orden...</p>
       </div>
     );
   }
@@ -106,7 +106,7 @@ export default function OrderDetailPage() {
         <Button
           variant="ghost"
           onClick={() => router.back()}
-          className="mb-6 gap-2"
+          className="mb-6 gap-2 text-white"
         >
           <ArrowLeft className="h-4 w-4" />
           Volver

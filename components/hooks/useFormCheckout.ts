@@ -51,30 +51,41 @@ export function useFormCheckout({ cartItems, defaultName = '', defaultEmail = ''
     0
   ) ?? 0;
 
-  const onSubmit = async (_data: ShippingFormData) => {
+  const onSubmit = async (data: ShippingFormData) => {
     setSubmitting(true);
     try {
-      const body = { value_to_pay: total };
-
       const res = await fetch('/api/megapagos/webcheckout', {
         cache: 'no-store',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ value_to_pay: total }),
       });
+
       if (res.ok) {
-        const { data } = await res.json();
-        if (data.url_webcheckout) {
+        const { data: webcheckoutData } = await res.json();
+        if (webcheckoutData.url_webcheckout) {
+          // Persiste datos del pedido para registrarlo al volver del pago
+          sessionStorage.setItem('pendingOrder', JSON.stringify({
+            shippingName: data.shippingName,
+            shippingEmail: data.shippingEmail,
+            shippingAddress: data.shippingAddress,
+            items: cartItems.map((item) => ({
+              productId: item.product.id,
+              quantity: item.quantity,
+              price: item.product.price,
+            })),
+            total,
+          }));
+
           await Promise.all(
             cartItems.map((item) =>
               fetch(`/api/cart?cartItemId=${item.id}`, { method: 'DELETE' })
             )
           );
-          globalThis.open(data.url_webcheckout, '_self');
+          globalThis.open(webcheckoutData.url_webcheckout, '_self');
         } else {
           toast.error('Error al crear proceso de pago');
         }
-
       } else {
         const error = await res.json();
         toast.error(error.message || 'Error al crear sesión de pago');

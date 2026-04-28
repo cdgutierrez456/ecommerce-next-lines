@@ -9,6 +9,7 @@ import { Trash2, ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { useGuestCart } from '@/store/cart-store';
+import { formatCOP } from '@/lib/utils';
 
 interface CartItem {
   id: string;
@@ -104,8 +105,8 @@ export default function CartPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Cargando carrito...</p>
+      <div className="min-h-screen flex items-center justify-center body-gradient">
+        <p className="text-white">Cargando carrito...</p>
       </div>
     );
   }
@@ -173,7 +174,7 @@ export default function CartPage() {
                         {item?.product?.category?.name}
                       </p>
                       <p className="text-lg font-bold text-primary mt-2">
-                        ${item?.product?.price?.toFixed?.(2) ?? '0.00'}
+                        {formatCOP(item?.product?.price ?? 0)}
                       </p>
                     </div>
 
@@ -240,13 +241,13 @@ export default function CartPage() {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span>${total?.toFixed?.(2) ?? '0.00'}</span>
+                    <span>{formatCOP(total)}</span>
                   </div>
                   <div className="border-t pt-4">
                     <div className="flex justify-between text-xl font-bold">
                       <span>Total</span>
                       <span className="text-primary">
-                        ${total?.toFixed?.(2) ?? '0.00'}
+                        {formatCOP(total)}
                       </span>
                     </div>
                   </div>

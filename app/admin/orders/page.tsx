@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
+import { formatCOP } from '@/lib/utils';
 
 interface Order {
   id: string;
@@ -187,7 +188,7 @@ export default function AdminOrdersPage() {
                       {order?.items?.length ?? 0}
                     </td>
                     <td className="px-6 py-4 font-semibold text-gray-900">
-                      ${order.total?.toFixed?.(2) ?? '0.00'}
+                      {formatCOP(order.total)}
                     </td>
                     <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
                     <td className="px-6 py-4 text-gray-700">

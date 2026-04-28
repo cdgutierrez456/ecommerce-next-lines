@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
 import { useFormCheckout, type CartItem } from '../hooks/useFormCheckout';
+import { formatCOP } from '@/lib/utils';
 
 interface FormCheckoutProps {
   cartItems: CartItem[];
@@ -84,7 +85,7 @@ export const FormCheckout = ({ cartItems, defaultName, defaultEmail }: FormCheck
                   {item?.product?.name} x {item?.quantity}
                 </span>
                 <span>
-                  ${((item?.product?.price ?? 0) * (item?.quantity ?? 0)).toFixed(2)}
+                  {formatCOP((item?.product?.price ?? 0) * (item?.quantity ?? 0))}
                 </span>
               </div>
             )) || null}
@@ -92,7 +93,7 @@ export const FormCheckout = ({ cartItems, defaultName, defaultEmail }: FormCheck
               <div className="flex justify-between text-xl font-bold">
                 <span>Total</span>
                 <span className="text-primary">
-                  ${total?.toFixed?.(2) ?? '0.00'}
+                  {formatCOP(total)}
                 </span>
               </div>
             </div>

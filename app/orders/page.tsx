@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Package, Eye } from 'lucide-react';
+import { formatCOP } from '@/lib/utils';
 
 interface Order {
   id: string;
@@ -77,8 +78,8 @@ export default function OrdersPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Cargando órdenes...</p>
+      <div className="min-h-screen flex items-center justify-center body-gradient">
+        <p className="text-white">Cargando órdenes...</p>
       </div>
     );
   }
@@ -140,7 +141,7 @@ export default function OrdersPage() {
                   </p>
                   <div className="flex items-center justify-between">
                     <p className="text-2xl font-bold text-primary">
-                      ${order.total?.toFixed?.(2) ?? '0.00'}
+                      {formatCOP(order.total)}
                     </p>
                     <Button
                       onClick={() => router.push(`/orders/${order.id}`)}

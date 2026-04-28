@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { DollarSign, Package, ShoppingCart, Users, TrendingUp } from 'lucide-react';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, Cell } from 'recharts';
+import { formatCOP } from '@/lib/utils';
 
 interface Stats {
   totalRevenue: number;
@@ -60,8 +61,8 @@ export default function AdminDashboard() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">Cargando dashboard...</p>
+      <div className="min-h-screen flex items-center justify-center body-gradient">
+        <p className="text-white">Cargando dashboard...</p>
       </div>
     );
   }
@@ -103,7 +104,7 @@ export default function AdminDashboard() {
               <div>
                 <p className="text-sm text-gray-600 mb-1">Ingresos Totales</p>
                 <p className="text-3xl font-bold text-gray-900">
-                  ${stats?.totalRevenue?.toFixed?.(2) ?? '0.00'}
+                  {formatCOP(stats?.totalRevenue ?? 0)}
                 </p>
               </div>
               <div className="bg-green-100 p-3 rounded-lg">

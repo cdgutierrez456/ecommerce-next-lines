@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { useGuestCart } from '@/store/cart-store';
+import { formatCOP } from '@/lib/utils';
 
 interface ProductCardProps {
   product: {
@@ -104,7 +105,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
 
             <div className="flex items-center justify-between pt-2">
               <p className="text-2xl font-bold text-gray-900">
-                ${product.price?.toFixed?.(2) ?? '0.00'}
+                {formatCOP(product.price)}
               </p>
               <Button
                 size="sm"

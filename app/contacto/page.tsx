@@ -76,7 +76,7 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Email</p>
-                      <p className="text-gray-900 font-medium">contacto@linesactitud.com</p>
+                      <p className="text-gray-900 font-medium">linesactitud@gmail.com</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -85,7 +85,7 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Teléfono</p>
-                      <p className="text-gray-900 font-medium">+57 300 000 0000</p>
+                      <p className="text-gray-900 font-medium">+57 314 381 15 17</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -94,7 +94,7 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-500">Dirección</p>
-                      <p className="text-gray-900 font-medium">Medellin - Colombia</p>
+                      <p className="text-gray-900 font-medium">Barrio Santa Teresa, Belén de los Andaquíes</p>
                     </div>
                   </div>
                 </div>
@@ -105,11 +105,11 @@ export default function ContactoPage() {
                 <div className="space-y-2 text-gray-700">
                   <div className="flex justify-between">
                     <span>Lunes – Viernes</span>
-                    <span className="font-medium">8:00 am – 6:00 pm</span>
+                    <span className="font-medium">8:00 am - 6:00 pm</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Sábado</span>
-                    <span className="font-medium">9:00 am – 2:00 pm</span>
+                    <span className="font-medium">9:00 am - 2:00 pm</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Domingo</span>

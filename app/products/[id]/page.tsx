@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { useGuestCart } from '@/store/cart-store';
+import { formatCOP } from '@/lib/utils';
 
 interface Product {
   id: string;
@@ -170,7 +171,7 @@ export default function ProductDetailPage() {
                 {product.name}
               </h1>
               <p className="text-3xl font-bold text-primary">
-                ${product.price?.toFixed?.(2) ?? '0.00'}
+                {formatCOP(product.price)}
               </p>
             </div>
 

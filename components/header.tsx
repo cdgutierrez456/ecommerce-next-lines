@@ -105,6 +105,14 @@ export function Header() {
 
           {/* Iconos derecha */}
           <div className="flex items-center gap-3 lg:gap-5">
+            {/* Conócenos — visible desktop */}
+            <Link
+              href="/conocenos"
+              className="hidden md:block text-sm font-[900] text-gray-200 hover:text-white transition-colors tracking-wide"
+            >
+              Conócenos
+            </Link>
+
             {isAdmin && (
               <Link href="/admin" className="text-gray-200 hover:text-white transition-colors" title="Admin">
                 <LayoutDashboard className="h-5 w-5" />
@@ -185,6 +193,13 @@ export function Header() {
                     {link.label}
                   </Link>
                 ))}
+                <Link
+                  href="/conocenos"
+                  className="flex items-center justify-between py-3 px-2 text-base font-medium text-gray-200 hover:text-white hover:bg-white/5 rounded-lg transition-colors border-b border-white/5"
+                  onClick={closeMenu}
+                >
+                  Conócenos
+                </Link>
 
                 {/* Sección de usuario autenticado */}
                 {status === 'authenticated' && session && (

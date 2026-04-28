@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Plus, Pencil, Trash2, ArrowLeft, Upload, AlertTriangle } from 'lucide-react';
+import { formatCOP } from '@/lib/utils';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 
@@ -271,7 +272,7 @@ export default function AdminProductsPage() {
                 Categoría: {product?.category?.name}
               </p>
               <p className="text-xl font-bold text-primary mb-2">
-                ${product.price?.toFixed?.(2) ?? '0.00'}
+                {formatCOP(product.price)}
               </p>
               <p className="text-sm text-gray-600 mb-4">
                 Stock: {product.stock}

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Package } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
+import { formatCOP } from '@/lib/utils';
 
 interface Order {
   id: string;
@@ -151,12 +152,12 @@ export default function OrderDetailPage() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal</span>
-                    <span className="font-medium">${order.total?.toFixed?.(2) ?? '0.00'}</span>
+                    <span className="font-medium">{formatCOP(order.total)}</span>
                   </div>
                   <div className="border-t pt-2">
                     <div className="flex justify-between text-xl font-bold">
                       <span>Total</span>
-                      <span className="text-primary">${order.total?.toFixed?.(2) ?? '0.00'}</span>
+                      <span className="text-primary">{formatCOP(order.total)}</span>
                     </div>
                   </div>
                 </div>
@@ -200,10 +201,10 @@ export default function OrderDetailPage() {
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-bold text-gray-900">
-                      ${item.price?.toFixed?.(2) ?? '0.00'}
+                      {formatCOP(item.price)}
                     </p>
                     <p className="text-sm text-gray-600">
-                      Total: ${((item?.price ?? 0) * (item?.quantity ?? 0)).toFixed(2)}
+                      Total: {formatCOP((item?.price ?? 0) * (item?.quantity ?? 0))}
                     </p>
                   </div>
                 </motion.div>
